@@ -36,10 +36,10 @@ var appView = new ol.View({
   zoom: 14
 });
 
-var dataLayer = new ol.View.Vector({
+var dataLayer = new ol.layer.Vector({
 
   source: new ol.source.Vector({
-    url:'../datajason',
+    url:'../data.jason',
   format: new ol.format. GeoJSON()
  })
 });
