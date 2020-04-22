@@ -1,271 +1,72 @@
-{
-  "type": "FeatureCollection",
-  "features": [
-    {
-      "type": "Feature",
-      "properties": {},
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              120.23094177246094,
-              23.338473101618522
-            ],
-            [
-              120.24673461914062,
-              23.338473101618522
-            ],
-            [
-              120.24673461914062,
-              23.358646434828184
-            ],
-            [
-              120.23094177246094,
-              23.358646434828184
-            ],
-            [
-              120.23094177246094,
-              23.338473101618522
-            ]
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {},
-      "geometry": {
-        "type": "LineString",
-        "coordinates": [
-          [
-            120.28724670410155,
-            23.344147161473412
-          ],
-          [
-            120.26939392089842,
-            23.223679038929404
-          ],
-          [
-            120.20965576171874,
-            23.213582524373837
-          ],
-          [
-            120.40397644042969,
-            23.306946133072103
-          ],
-          [
-            120.36621093749999,
-            23.407806080861413
-          ],
-          [
-            120.32363891601562,
-            23.28613423834454
-          ],
-          [
-            120.33668518066405,
-            23.224310045745472
-          ],
-          [
-            120.36346435546874,
-            23.127731365725925
-          ],
-          [
-            120.44929504394531,
-            23.217999843405924
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {},
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              120.27969360351562,
-              23.443718896450633
-            ],
-            [
-              120.20896911621092,
-              23.43363909079847
-            ],
-            [
-              120.26527404785156,
-              23.371883518021967
-            ],
-            [
-              120.32638549804688,
-              23.423558516476806
-            ],
-            [
-              120.27969360351562,
-              23.443718896450633
-            ]
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {},
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          120.46165466308592,
-          23.39520278228782
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {},
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          120.45066833496094,
-          23.319557817969702
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {},
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              120.29548645019531,
-              23.531884368659753
-            ],
-            [
-              120.35316467285158,
-              23.461356705968978
-            ],
-            [
-              120.35453796386719,
-              23.455687666943383
-            ],
-            [
-              120.36209106445312,
-              23.492846933107185
-            ],
-            [
-              120.29548645019531,
-              23.531884368659753
-            ]
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {},
-      "geometry": {
-        "type": "LineString",
-        "coordinates": [
-          [
-            120.39093017578125,
-            23.48906850281032
-          ],
-          [
-            120.43487548828125,
-            23.248286094537924
-          ],
-          [
-            120.48912048339842,
-            23.264057460884295
-          ],
-          [
-            120.50834655761717,
-            23.21168934293077
-          ],
-          [
-            120.41976928710938,
-            23.33279879931005
-          ],
-          [
-            120.39093017578125,
-            23.486549489117195
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {},
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          120.17257690429688,
-          23.277934719585332
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {},
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              120.37651062011719,
-              23.42040817940404
-            ],
-            [
-              120.3943634033203,
-              23.42040817940404
-            ],
-            [
-              120.3943634033203,
-              23.440569039771567
-            ],
-            [
-              120.37651062011719,
-              23.440569039771567
-            ],
-            [
-              120.37651062011719,
-              23.42040817940404
-            ]
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {},
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              120.32020568847655,
-              23.553916518321625
-            ],
-            [
-              120.36621093749999,
-              23.5369206140002
-            ],
-            [
-              120.34217834472656,
-              23.560840145696922
-            ],
-            [
-              120.32432556152344,
-              23.553287079563514
-            ],
-            [
-              120.32020568847655,
-              23.553916518321625
-            ]
-          ]
-        ]
+window.app = {};
+var sidebar = new ol.control.Sidebar({ element: 'sidebar', position: 'right' });
+
+var projection = ol.proj.get('EPSG:3857');
+var projectionExtent = projection.getExtent();
+var size = ol.extent.getWidth(projectionExtent) / 256;
+var resolutions = new Array(20);
+var matrixIds = new Array(20);
+var clickedCoordinate, populationLayer, gPopulation;
+for (var z = 0; z < 20; ++z) {
+    // generate resolutions and matrixIds arrays for this WMTS
+    resolutions[z] = size / Math.pow(2, z);
+    matrixIds[z] = z;
+}
+
+var baseLayer = new ol.layer.Tile({
+    source: new ol.source.WMTS({
+        matrixSet: 'EPSG:3857',
+        format: 'image/png',
+        url: 'http://wmts.nlsc.gov.tw/wmts',
+        layer: 'EMAP',
+        tileGrid: new ol.tilegrid.WMTS({
+            origin: ol.extent.getTopLeft(projectionExtent),
+            resolutions: resolutions,
+            matrixIds: matrixIds
+        }),
+        style: 'default',
+        wrapX: true,
+        attributions: '<a href="http://maps.nlsc.gov.tw/" target="_blank">國土測繪圖資服務雲</a>'
+    }),
+    opacity: 0.3
+});
+
+var appView = new ol.View({
+  center: ol.proj.fromLonLat([120.221115, 22.964407]),
+  zoom: 14
+});
+
+var dataLayer = new ol.View.Vector({
+
+  source: new ol.source.Vector({
+    url:'../datajason',
+  format: new ol.format. GeoJSON()
+ })
+});
+
+var map = new ol.Map({
+  layers: [baseLayer,dataLayer],
+  target: 'map',
+  view: appView
+});
+map.addControl(sidebar);
+
+var content = document.getElementById('sidebarContent');
+map.on('singleclick', function(evt) {
+  content.innerHTML = '';
+  clickedCoordinate = evt.coordinate;
+
+  map.forEachFeatureAtPixel(evt.pixel, function (feature, layer) {
+    var message = '';
+    var p = feature.getProperties();
+    for(k in p) {
+      if(k !== 'geometry') {
+        message += k + ': ' + p[k] + '<br />';
       }
     }
-  ]
-}
+
+    content.innerHTML += message + '<hr />';
+  });
+
+  sidebar.open('home');
+});
